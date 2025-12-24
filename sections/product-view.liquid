@@ -1,0 +1,582 @@
+{%- liquid
+  assign left_width = section.settings.left_width_percent | default: 50
+  assign right_width = section.settings.right_width_percent | default: 50
+  assign total_width = left_width | plus: right_width
+  
+  if total_width != 100
+    assign right_width = 100 | minus: left_width
+  endif
+  
+  if right_width < 20
+    assign right_width = 20
+    assign left_width = 80
+  endif
+  
+  if right_width > 80
+    assign right_width = 80
+    assign left_width = 20
+  endif
+-%}
+
+{%- style -%}
+  .product-view-{{ section.id }} {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-view-{{ section.id }} .product-view__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-view-{{ section.id }} .product-view__images {
+    width: {{ left_width }}%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+  }
+
+  .product-view-{{ section.id }} .product-view__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .product-view-{{ section.id }} .product-view__image-1,
+  .product-view-{{ section.id }} .product-view__image-2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .product-view-{{ section.id }} .product-view__image-1 {
+    z-index: 2;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.1s linear;
+  }
+
+  .product-view-{{ section.id }} .product-view__image-2 {
+    z-index: 1;
+  }
+
+  .product-view-{{ section.id }} .product-view__content {
+    width: {{ right_width }}%;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    {% if section.settings.content_max_width > 0 %}
+      max-width: {{ section.settings.content_max_width }}px;
+      margin: 0 auto;
+    {% endif %}
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-view-{{ section.id }} {
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .product-view-{{ section.id }} .product-view__container {
+      flex-direction: column;
+    }
+
+    .product-view-{{ section.id }} .product-view__images {
+      width: 100%;
+      height: 50vh;
+      position: relative;
+      sticky: none;
+    }
+
+    .product-view-{{ section.id }} .product-view__content {
+      width: 100%;
+      height: auto;
+      min-height: 50vh;
+      padding: 1.5rem;
+    }
+
+    .product-view-{{ section.id }} .product-view__image-1 {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .color-scheme-{{ section.id }}.color-custom {
+    --color-background: {{ section.settings.custom_colors_background.red }}, {{ section.settings.custom_colors_background.green }}, {{ section.settings.custom_colors_background.blue }};
+    --gradient-background: {% if section.settings.custom_gradient_background != blank %}{{ section.settings.custom_gradient_background }}{% else %}{{ section.settings.custom_colors_background }}{% endif %};
+    {% if section.settings.custom_image_background != blank %}
+      {% # theme-check-disable %}
+      --gradient-background: url('{{ section.settings.custom_image_background | img_url: 'master' }}') center center / cover no-repeat;
+      {% # theme-check-enable %}
+    {% endif %}
+    --color-foreground: {{ section.settings.custom_colors_text.red }}, {{ section.settings.custom_colors_text.green }}, {{ section.settings.custom_colors_text.blue }};
+  }
+{%- endstyle -%}
+
+<div class="product-view-{{ section.id }} color-scheme-{{ section.id }} color-{{ section.settings.color_scheme }} gradient content-for-grouping animate-section animate--hidden isolate {{ section.settings.visibility }} section-{{ section.id }}-padding" data-section-id="{{ section.id }}">
+  {% if section.settings.display_id %}
+    <copy-button class='section-id-btn button' data-content="#shopify-section-{{ section.id }}" data-success="false">
+      <span class="copy-text">Click to copy section ID</span>
+      <span class="copy-success">ID copied successfully!</span>
+    </copy-button>
+  {% endif %}
+  
+  <div class="product-view__container">
+    <!-- Left side: Images -->
+    <div class="product-view__images">
+      <div class="product-view__image-wrapper">
+        {%- if section.settings.image_1 != blank -%}
+          {%- liquid
+            assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+            assign image_height = section.settings.image_1.width | divided_by: section.settings.image_1.aspect_ratio
+          -%}
+          {{
+            section.settings.image_1
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              height: image_height,
+              sizes: '50vw',
+              widths: widths,
+              alt: section.settings.image_1.alt | default: 'Product view image 1',
+              class: 'product-view__image-1'
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder product-view__image-1' }}
+        {%- endif -%}
+        
+        {%- if section.settings.image_2 != blank -%}
+          {%- liquid
+            assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+            assign image_height = section.settings.image_2.width | divided_by: section.settings.image_2.aspect_ratio
+          -%}
+          {{
+            section.settings.image_2
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              height: image_height,
+              sizes: '50vw',
+              widths: widths,
+              alt: section.settings.image_2.alt | default: 'Product view image 2',
+              class: 'product-view__image-2'
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder product-view__image-2' }}
+        {%- endif -%}
+      </div>
+    </div>
+    
+    <!-- Right side: Content -->
+    <div class="product-view__content">
+      {%- if section.settings.html_content != blank -%}
+        {{ section.settings.html_content }}
+      {%- else -%}
+        <p>Add your HTML content here.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Inline parallax scroll effect - works independently of external script
+  (function() {
+    const sectionId = '{{ section.id }}';
+    
+    let initCount = 0;
+    const MAX_INIT_RETRIES = 50; // Max 5 seconds of retries
+    
+    function initParallax() {
+      initCount++;
+      
+      const sectionElement = document.querySelector('.product-view-' + sectionId);
+      if (!sectionElement) {
+        if (initCount < MAX_INIT_RETRIES) {
+          setTimeout(initParallax, 100);
+        }
+        return;
+      }
+      
+      const image1 = sectionElement.querySelector('.product-view__image-1');
+      const image2 = sectionElement.querySelector('.product-view__image-2');
+      
+      // Only run parallax if both images exist
+      if (!image1 || !image2) {
+        if (initCount < MAX_INIT_RETRIES) {
+          setTimeout(initParallax, 100);
+        }
+        return;
+      }
+      
+      // Check if images are actual img tags (not placeholder SVGs)
+      // For img tags: tagName is 'IMG', for SVG placeholders: tagName is 'svg'
+      const isImage1 = image1.tagName && image1.tagName.toUpperCase() === 'IMG';
+      const isImage2 = image2.tagName && image2.tagName.toUpperCase() === 'IMG';
+      
+      // If placeholders, wait and retry
+      if (!isImage1 || !isImage2) {
+        if (initCount < MAX_INIT_RETRIES) {
+          setTimeout(initParallax, 100);
+        }
+        return;
+      }
+      
+      // Check if images have src
+      const img1Src = image1.src || image1.getAttribute('src') || image1.getAttribute('srcset');
+      const img2Src = image2.src || image2.getAttribute('src') || image2.getAttribute('srcset');
+      
+      if (!img1Src || !img2Src) {
+        // Images not loaded yet, wait and retry
+        if (initCount < MAX_INIT_RETRIES) {
+          setTimeout(initParallax, 100);
+        }
+        return;
+      }
+      
+      // Wait for images to be fully loaded before initializing parallax
+      let imagesReady = false;
+      
+      function startParallax() {
+        if (imagesReady) return;
+        imagesReady = true;
+        
+        const isMobile = window.innerWidth <= 749;
+        if (isMobile) {
+          image1.style.clipPath = 'inset(0% 0 0 0)';
+          return;
+        }
+        
+        // Initialize parallax scroll effect
+        let ticking = false;
+        
+        function updateClipPath() {
+          if (window.innerWidth <= 749) {
+            image1.style.clipPath = 'inset(0% 0 0 0)';
+            return;
+          }
+          
+          // Get section position relative to viewport
+          const rect = sectionElement.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          const sectionHeight = rect.height;
+          
+          let progress = 0;
+          
+          // Simple calculation based on viewport position
+          // rect.top: distance from section top to viewport top
+          // When rect.top = windowHeight: section just entered (progress = 0)
+          // When rect.top = -sectionHeight: section about to exit (progress = 1)
+          
+          if (rect.bottom > 0 && rect.top < windowHeight) {
+            // Section is visible in viewport
+            // Calculate progress: 0 when section enters, 1 when section exits
+            const scrollStart = windowHeight; // Section top at viewport bottom
+            const scrollEnd = -sectionHeight; // Section bottom at viewport top
+            const scrollRange = scrollStart - scrollEnd;
+            const scrolled = scrollStart - rect.top;
+            
+            progress = scrolled / scrollRange;
+            progress = Math.max(0, Math.min(1, progress));
+          } else if (rect.top >= windowHeight) {
+            // Section below viewport - hasn't entered yet
+            progress = 0;
+          } else if (rect.bottom <= 0) {
+            // Section above viewport - scrolled past
+            progress = 1;
+          }
+          
+          // Apply clip-path: reveal from top to bottom
+          // progress 0 = hidden (100% from top), progress 1 = visible (0% from top)
+          const clipValue = (1 - progress) * 100;
+          image1.style.clipPath = 'inset(' + clipValue + '% 0 0 0)';
+        }
+        
+        // Create scroll handler with proper scope
+        const scrollHandler = function() {
+          if (!ticking) {
+            window.requestAnimationFrame(function() {
+              updateClipPath();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+        
+        // Attach event listeners to window scroll
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+        document.addEventListener('scroll', scrollHandler, { passive: true });
+        document.documentElement.addEventListener('scroll', scrollHandler, { passive: true });
+        
+        // Resize handler
+        window.addEventListener('resize', function() {
+          updateClipPath();
+        }, { passive: true });
+        
+        // Initial update
+        setTimeout(function() {
+          updateClipPath();
+        }, 100);
+        
+        // Also update after layout
+        setTimeout(function() {
+          updateClipPath();
+        }, 500);
+      }
+      
+      // Check if images are already loaded
+      if (image1.complete && image2.complete) {
+        startParallax();
+      } else {
+        // Wait for images to load
+        let loadedCount = 0;
+        const checkLoaded = function() {
+          loadedCount++;
+          if (loadedCount === 2) {
+            setTimeout(startParallax, 50);
+          }
+        };
+        
+        image1.addEventListener('load', checkLoaded, { once: true });
+        image2.addEventListener('load', checkLoaded, { once: true });
+        
+        // Fallback timeout - initialize anyway after 2 seconds
+        setTimeout(function() {
+          if (!imagesReady) {
+            startParallax();
+          }
+        }, 2000);
+      }
+    }
+    
+    // Initialize immediately
+    initParallax();
+    
+    // Also initialize on DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initParallax();
+      });
+    }
+    
+    // Also try after delay for dynamic content
+    setTimeout(function() {
+      initParallax();
+    }, 500);
+  })();
+</script>
+
+<script src="{{ 'product-view.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Product View",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_id",
+      "label": "Display section ID",
+      "info": "ID is used in the Sections group section to merge 2 sections. ID can also be put inside any button link and the button will scroll to this section.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        {
+          "value": "desktop-hidden",
+          "label": "Mobile only"
+        },
+        {
+          "value": "mobile-hidden",
+          "label": "Desktop only"
+        },
+        {
+          "value": "always-display",
+          "label": "All devices"
+        }
+      ],
+      "label": "Display on",
+      "default": "always-display"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Custom color scheme is edited at the bottom of section settings."
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "left_width_percent",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Left side width",
+      "default": 50,
+      "info": "Width of the left side (images). Right side will automatically adjust to total 100%."
+    },
+    {
+      "type": "range",
+      "id": "right_width_percent",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Right side width",
+      "default": 50,
+      "info": "Width of the right side (content). Left side will automatically adjust to total 100%."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 (Background)",
+      "info": "This image will reveal gradually as you scroll down the page."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 (Overlay)",
+      "info": "This image will be covered by Image 1 as you scroll down."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "html_content",
+      "label": "HTML Content",
+      "info": "Add your HTML content for the right side. This will be rendered as HTML."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 0,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 0,
+      "info": "Maximum width of content area. Set to 0 for full width."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Custom color scheme",
+      "info": "Applied if Color scheme setting is set to Custom."
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_background",
+      "default": "#FFFFFF",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "custom_gradient_background",
+      "label": "Gradient background",
+      "info": "If added, replaces Background color when applicable."
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_background",
+      "label": "Image background"
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_text",
+      "default": "#2E2A39",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product View"
+    }
+  ]
+}
+{% endschema %}
+

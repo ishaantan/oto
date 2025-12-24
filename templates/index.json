@@ -1,0 +1,401 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hover_slider_wUdHH9": {
+      "type": "hover-slider",
+      "blocks": {
+        "slide_AMF8gH": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2_5fd98461-0bb5-4c3b-a15d-e296a62390da.jpg",
+            "heading": "Home is where the cat/dog is.",
+            "description": "<p>The mat provides plush comfort, helping your dog enjoy a cool midday nap without the dampness or dirt from the floor. It ensures a refreshing summer, so you no longer have to worry about your \"Boss\" suffering from heatstroke!</p>",
+            "link": "shopify://products/self-warming-cat-mat-for-small-cat-self-heating-dog-crate-pad-thermal-extra-warm-puppy-mat-indoor-outdoor-non-slip-washable"
+          }
+        },
+        "slide_w8dVjj": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/597386039_2049232055923477_900990873096639827_n.jpg",
+            "heading": "A dog is the only thing on earth that loves you more than he loves himself.",
+            "description": "<p>Give your furry friend nutritious tasty meals that support health energy and a happy active lifestyle.</p>",
+            "link": ""
+          }
+        },
+        "slide_9zjaLA": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1_81c3d37e-1ac9-400a-94be-f65b6aed4d2b.jpg",
+            "heading": "Connection",
+            "description": "<p>Dogs and cats (traditionally seen as enemies) can become soulmates when they share a common love for their human.</p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_AMF8gH",
+        "slide_w8dVjj",
+        "slide_9zjaLA"
+      ],
+      "name": "Hover Slider",
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "color_scheme": "background-1",
+        "zoom_percent": 9,
+        "heading_color": "#ffffff",
+        "description_color": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39"
+      }
+    },
+    "image_gallery_PWzMdC": {
+      "type": "image-gallery",
+      "blocks": {
+        "image_9QbWTh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/597367982_2044648843048465_1610026836505603081_n.jpg",
+            "heading": "Fur-baby",
+            "description": "<p>In ancient times cats were worshipped as gods, they have not forgotten this.</p>",
+            "link": "shopify://products/electromagnetic-anti-freezing-device-enjoy-a-clear-windshield-every-winter-morning",
+            "audio_src": "https://cdn.shopify.com/s/files/1/0707/6357/7495/files/queen-of-the-couch-a-fun-song-for-cat-lovers-386495.mp3?v=1766498119",
+            "start_new_row": true,
+            "row_desktop_columns": "4",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_Fcy8V4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/view-automatic-smart-feeder-household-pets.jpg",
+            "heading": "My kids have paws.",
+            "description": "<p>What greater gift than the love of a cat?</p>",
+            "link": "shopify://products/self-warming-cat-mat-for-small-cat-self-heating-dog-crate-pad-thermal-extra-warm-puppy-mat-indoor-outdoor-non-slip-washable",
+            "audio_src": "https://cdn.shopify.com/s/files/1/0707/6357/7495/files/meow-meow-give-me-milk-version-1-317260.mp3?v=1766497757",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_imCwCP": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/1_81c3d37e-1ac9-400a-94be-f65b6aed4d2b.jpg",
+            "heading": "I'm a proud Dog Mom / Cat Dad.",
+            "description": "<p>Dogs are not our whole life, but they make our lives whole.</p>",
+            "link": "shopify://products/self-warming-cat-mat-for-small-cat-self-heating-dog-crate-pad-thermal-extra-warm-puppy-mat-indoor-outdoor-non-slip-washable",
+            "audio_src": "",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_tQK4qn": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2_cbd6a686-29ce-46e7-8725-88ba6d14c6bf.jpg",
+            "heading": "Equality",
+            "description": "<p>Pets are treated as official family members (fur-babies).</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_YdX6jC": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/585888920_2027601938086489_7803747663084192166_n.jpg",
+            "heading": "I'm a proud Dog Mom / Cat Dad.",
+            "description": "<p>A cat has absolute emotional honesty: human beings, for one reason or another, may hide their feelings, but a cat does not.</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": true,
+            "row_desktop_columns": "2",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_VMEFp4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/589610159_2034855470694469_7418633060386466914_n.jpg",
+            "heading": "Trials and Triumphs",
+            "description": "<p>Home is not just a place where you live; it’s where the tiny paws wait for you to return.</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_YpkwrM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/588719048_2034819130698103_4174365728222771759_n.jpg",
+            "heading": "Rescued is my favorite breed.",
+            "description": "<p>Dogs come when they're called; cats take a message and get back to you later.</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": true,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_aak38n": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/585368829_2027601911419825_9143514535565101294_n.jpg",
+            "heading": "Pet Accessories",
+            "description": "<p>Essential accessories for your pet's comfort and style.</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        },
+        "image_Ye4iTG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/587230495_2034855517361131_7399926465654366275_n.jpg",
+            "heading": "Empathy",
+            "description": "<p>Sometimes words aren't necessary; a wagging tail or a soft purr is enough to heal the soul.</p>",
+            "link": "",
+            "audio_src": "",
+            "start_new_row": false,
+            "row_desktop_columns": "3",
+            "row_tablet_columns": "2",
+            "row_mobile_columns": "1",
+            "desktop_columns_span": 1,
+            "tablet_columns_span": 1,
+            "mobile_columns_span": 1
+          }
+        }
+      },
+      "block_order": [
+        "image_9QbWTh",
+        "image_Fcy8V4",
+        "image_imCwCP",
+        "image_tQK4qn",
+        "image_YdX6jC",
+        "image_VMEFp4",
+        "image_YpkwrM",
+        "image_aak38n",
+        "image_Ye4iTG"
+      ],
+      "name": "Image Gallery",
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "color_scheme": "background-1",
+        "desktop_columns": "2",
+        "tablet_columns": "2",
+        "mobile_columns": "1",
+        "gap_size": 16,
+        "zoom_percent": 5,
+        "heading_color": "#ffffff",
+        "description_color": "#ffffff",
+        "overlay_opacity": 70,
+        "padding_top": 16,
+        "padding_bottom": 0,
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39"
+      }
+    },
+    "0f1fc9e4-bc4c-4052-9747-62d1f8472caa": {
+      "type": "results",
+      "blocks": {
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-1": {
+          "type": "row",
+          "settings": {
+            "percentage": 82,
+            "row_text": "<p>Captures up to 95% of scattered litter right at the litter box exit, saving your floors from \"crunchy\" steps.</p>"
+          }
+        },
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-2": {
+          "type": "row",
+          "settings": {
+            "percentage": 100,
+            "row_text": "<p>The bottom layer is completely waterproof, protecting your hardwood floors or carpets from nasty urine stains.</p>"
+          }
+        },
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-3": {
+          "type": "row",
+          "settings": {
+            "percentage": 94,
+            "row_text": "<p>No more daily vacuuming. Just pick up the mat, dump the trapped litter back into the box, and you're done.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-1",
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-2",
+        "template--21507361505575__0f1fc9e4-bc4c-4052-9747-62d1f8472caa-row-3"
+      ],
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "title": "Results",
+        "title_highlight_color": "#6d388b",
+        "heading_size": "h1",
+        "text": "<p>Stop finding litter in your bed or on your sofa. Our double-layer honeycomb design traps litter instantly, keeping your home pristine and your cat happy.</p>",
+        "video_muted_autoplay": true,
+        "color_scheme": "background-1",
+        "layout": "results_second",
+        "results_headline": "The most positive results",
+        "results_title_highlight_color": "#6d388b",
+        "results_headline_size": "h2",
+        "results_text": "",
+        "results_headline_alignment": "left",
+        "caption": "",
+        "button_label": "",
+        "link": "",
+        "button_style_secondary": false,
+        "atc_button_label": "",
+        "atc_product": "",
+        "atc_skip_cart": false,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_accent": "#dd1d1d",
+        "custom_colors_solid_button_background": "#dd1d1d",
+        "custom_colors_solid_button_text": "#ffffff",
+        "custom_colors_outline_button": "#dd1d1d"
+      }
+    },
+    "contact_form_WHP8G7": {
+      "type": "contact-form",
+      "blocks": {
+        "field_row_fNxBGi": {
+          "type": "field_row",
+          "settings": {
+            "input_1_enabled": true,
+            "input_1_type": "name",
+            "input_1_required": false,
+            "input_1_error_message": "This field is required",
+            "input_1_custom_name": "Custom input name",
+            "input_2_enabled": true,
+            "input_2_type": "email",
+            "input_2_required": false,
+            "input_2_error_message": "This field is required",
+            "input_2_custom_name": "Custom input name"
+          }
+        },
+        "field_row_f84rat": {
+          "type": "field_row",
+          "settings": {
+            "input_1_enabled": true,
+            "input_1_type": "phone",
+            "input_1_required": false,
+            "input_1_error_message": "This field is required",
+            "input_1_custom_name": "Custom input name",
+            "input_2_enabled": false,
+            "input_2_type": "custom",
+            "input_2_required": false,
+            "input_2_error_message": "This field is required",
+            "input_2_custom_name": "Custom input name"
+          }
+        },
+        "textarea_NbxXax": {
+          "type": "textarea",
+          "settings": {
+            "input_type": "comment",
+            "input_required": false,
+            "input_error_message": "This field is required",
+            "input_custom_name": "Custom name"
+          }
+        }
+      },
+      "block_order": [
+        "field_row_fNxBGi",
+        "field_row_f84rat",
+        "textarea_NbxXax"
+      ],
+      "disabled": true,
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "title": "Contact form",
+        "title_highlight_color": "#6d388b",
+        "heading_size": "h1",
+        "button_full_width": true,
+        "color_scheme": "background-1",
+        "success_icon": "check_circle",
+        "success_icon_filled": false,
+        "success_text_color": "#28c100",
+        "success_bg_color": "#f2ffed",
+        "success_border_radius": 8,
+        "success_border_width": 1,
+        "success_border_color": "#28c100",
+        "errors_icon": "error",
+        "errors_icon_filled": false,
+        "errors_text_color": "#ff0000",
+        "errors_bg_color": "#fff5f5",
+        "errors_border_radius": 8,
+        "errors_border_width": 1,
+        "errors_border_color": "#ff0000",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_solid_button_background": "#dd1d1d",
+        "custom_colors_solid_button_text": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "hover_slider_wUdHH9",
+    "image_gallery_PWzMdC",
+    "0f1fc9e4-bc4c-4052-9747-62d1f8472caa",
+    "contact_form_WHP8G7"
+  ]
+}

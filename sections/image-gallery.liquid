@@ -1,0 +1,781 @@
+{%- liquid
+  assign zoom_percent = section.settings.zoom_percent | default: 3
+  assign total_percent = 100 | plus: zoom_percent
+  assign scale_value = total_percent | divided_by: 100.0
+  
+  assign desktop_columns = section.settings.desktop_columns | default: 3
+  assign tablet_columns = section.settings.tablet_columns | default: 2
+  assign mobile_columns = section.settings.mobile_columns | default: 1
+  assign gap_size = section.settings.gap_size | default: 16
+  
+  assign overlay_opacity = section.settings.overlay_opacity | default: 70
+-%}
+
+{%- style -%}
+  .image-gallery-{{ section.id }} {
+    width: 100%;
+    position: relative;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__container {
+    display: flex;
+    flex-direction: column;
+    gap: {{ gap_size }}px;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__row {
+    display: grid;
+    grid-template-columns: repeat(var(--row-mobile-cols), 1fr);
+    gap: {{ gap_size }}px;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    grid-column: span var(--mobile-span);
+  }
+
+  @media screen and (min-width: 480px) {
+    .image-gallery-{{ section.id }} .image-gallery__row {
+      grid-template-columns: repeat(var(--row-tablet-cols), 1fr);
+    }
+    .image-gallery-{{ section.id }} .image-gallery__item {
+      grid-column: span var(--tablet-span);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .image-gallery-{{ section.id }} .image-gallery__row {
+      grid-template-columns: repeat(var(--row-desktop-cols), 1fr);
+    }
+    .image-gallery-{{ section.id }} .image-gallery__item {
+      grid-column: span var(--desktop-span);
+    }
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__item:hover .image-gallery__image-wrapper img {
+    transform: scale({{ scale_value }});
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__audio {
+    display: none;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__item.is-playing {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z'/%3E%3C/svg%3E") 12 12, auto;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__item.is-playing * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z'/%3E%3C/svg%3E") 12 12, auto;
+  }
+
+  {%- liquid
+    assign overlay_start = overlay_opacity | times: 1.0 | divided_by: 100.0
+    assign overlay_mid = overlay_start | times: 0.6
+  -%}
+  .image-gallery-{{ section.id }} .image-gallery__text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, {{ overlay_start }}) 0%, rgba(0, 0, 0, {{ overlay_mid }}) 50%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__heading {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: {% if section.settings.heading_color != blank %}{{ section.settings.heading_color }}{% else %}#ffffff{% endif %};
+  }
+
+  .image-gallery-{{ section.id }} .image-gallery__description {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    color: {% if section.settings.description_color != blank %}{{ section.settings.description_color }}{% else %}#ffffff{% endif %};
+  }
+
+  @media screen and (min-width: 480px) {
+    .image-gallery-{{ section.id }} .image-gallery__container {
+      grid-template-columns: repeat({{ tablet_columns }}, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .image-gallery-{{ section.id }} .image-gallery__container {
+      grid-template-columns: repeat({{ desktop_columns }}, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .image-gallery-{{ section.id }} .image-gallery__text-overlay {
+      padding: 1.5rem;
+    }
+
+    .image-gallery-{{ section.id }} .image-gallery__heading {
+      font-size: 1.25rem;
+    }
+
+    .image-gallery-{{ section.id }} .image-gallery__description {
+      font-size: 0.875rem;
+    }
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .color-scheme-{{ section.id }}.color-custom {
+    --color-background: {{ section.settings.custom_colors_background.red }}, {{ section.settings.custom_colors_background.green }}, {{ section.settings.custom_colors_background.blue }};
+    --gradient-background: {% if section.settings.custom_gradient_background != blank %}{{ section.settings.custom_gradient_background }}{% else %}{{ section.settings.custom_colors_background }}{% endif %};
+    {% if section.settings.custom_image_background != blank %}
+      {% # theme-check-disable %}
+      --gradient-background: url('{{ section.settings.custom_image_background | img_url: 'master' }}') center center / cover no-repeat;
+      {% # theme-check-enable %}
+    {% endif %}
+    --color-foreground: {{ section.settings.custom_colors_text.red }}, {{ section.settings.custom_colors_text.green }}, {{ section.settings.custom_colors_text.blue }};
+  }
+{%- endstyle -%}
+
+<div class="image-gallery-{{ section.id }} color-scheme-{{ section.id }} color-{{ section.settings.color_scheme }} gradient content-for-grouping animate-section animate--hidden isolate {{ section.settings.visibility }} section-{{ section.id }}-padding">
+  {% if section.settings.display_id %}
+    <copy-button class='section-id-btn button' data-content="#shopify-section-{{ section.id }}" data-success="false">
+      <span class="copy-text">Click to copy section ID</span>
+      <span class="copy-success">ID copied successfully!</span>
+    </copy-button>
+  {% endif %}
+  
+  <div class="image-gallery__container">
+    {%- assign row_desktop_cols = desktop_columns -%}
+    {%- assign row_tablet_cols = tablet_columns -%}
+    {%- assign row_mobile_cols = mobile_columns -%}
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign should_start_new_row = false
+        if block.settings.start_new_row == true and forloop.index0 > 0
+          assign should_start_new_row = true
+        endif
+        
+        if block.settings.start_new_row == true
+          assign row_desktop_cols = block.settings.row_desktop_columns | default: desktop_columns
+          assign row_tablet_cols = block.settings.row_tablet_columns | default: tablet_columns
+          assign row_mobile_cols = block.settings.row_mobile_columns | default: mobile_columns
+        endif
+        
+        assign block_desktop_span = block.settings.desktop_columns_span | default: 1
+        assign block_tablet_span = block.settings.tablet_columns_span | default: 1
+        assign block_mobile_span = block.settings.mobile_columns_span | default: 1
+      -%}
+      {%- if should_start_new_row -%}
+        </div>
+        <div class="image-gallery__row" style="--row-desktop-cols: {{ row_desktop_cols }}; --row-tablet-cols: {{ row_tablet_cols }}; --row-mobile-cols: {{ row_mobile_cols }};">
+      {%- elsif forloop.first -%}
+        <div class="image-gallery__row" style="--row-desktop-cols: {{ row_desktop_cols }}; --row-tablet-cols: {{ row_tablet_cols }}; --row-mobile-cols: {{ row_mobile_cols }};">
+      {%- endif -%}
+      <div 
+        class="image-gallery__item" 
+        style="--desktop-span: {{ block_desktop_span }}; --tablet-span: {{ block_tablet_span }}; --mobile-span: {{ block_mobile_span }};"
+        {{ block.shopify_attributes }}>
+        {%- if block.settings.audio_src != blank -%}
+          <audio 
+            class="image-gallery__audio" 
+            data-audio-id="{{ block.id }}"
+            preload="none"
+            src="{{ block.settings.audio_src }}"
+          ></audio>
+        {%- endif -%}
+        {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}" class="image-gallery__link" aria-label="{{ block.settings.heading | default: 'Gallery image' | escape }}">
+        {%- endif -%}
+          <div class="image-gallery__image-wrapper">
+            {%- if block.settings.image != blank -%}
+              {%- liquid
+                assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                assign image_height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio
+                assign sizes_value = '(min-width: 750px) calc(100vw / ' | append: desktop_columns | append: '), (min-width: 480px) calc(100vw / ' | append: tablet_columns | append: '), calc(100vw / ' | append: mobile_columns | append: ')'
+              -%}
+              {{
+                block.settings.image
+                | image_url: width: 3840
+                | image_tag:
+                  loading: 'lazy',
+                  height: image_height,
+                  sizes: sizes_value,
+                  widths: widths,
+                  alt: block.settings.heading | default: block.settings.image.alt | default: 'Gallery image'
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+            {%- endif -%}
+          </div>
+          {%- if block.settings.heading != blank or block.settings.description != blank -%}
+            <div class="image-gallery__text-overlay">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="image-gallery__heading">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <div class="image-gallery__description">{{ block.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- if block.settings.link != blank -%}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+    {%- if section.blocks.size > 0 -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    const gallerySection = document.querySelector('.image-gallery-{{ section.id }}');
+    if (!gallerySection) return;
+
+    let currentPlayingAudio = null;
+    let currentPlayingItem = null;
+    let audioUnlocked = false;
+
+    const galleryItems = gallerySection.querySelectorAll('.image-gallery__item');
+    const audioElements = gallerySection.querySelectorAll('.image-gallery__audio');
+    
+    // Function to unlock audio context
+    function unlockAudio(callback) {
+      if (audioUnlocked) {
+        if (callback) callback();
+        return Promise.resolve();
+      }
+      
+      // Try to unlock by playing and immediately pausing the first audio element
+      if (audioElements.length === 0) {
+        if (callback) callback();
+        return Promise.resolve();
+      }
+      
+      const firstAudio = audioElements[0];
+      const playPromise = firstAudio.play();
+      
+      if (playPromise !== undefined) {
+        return playPromise.then(function() {
+          firstAudio.pause();
+          firstAudio.currentTime = 0;
+          audioUnlocked = true;
+          if (callback) callback();
+        }).catch(function() {
+          // If unlock fails, callback will be called on next interaction
+          if (callback) callback();
+        });
+      }
+      
+      if (callback) callback();
+      return Promise.resolve();
+    }
+
+    // Unlock audio on any user interaction with the gallery
+    gallerySection.addEventListener('click', function() {
+      unlockAudio();
+    }, { once: true });
+    
+    gallerySection.addEventListener('touchstart', function() {
+      unlockAudio();
+    }, { once: true });
+    
+    galleryItems.forEach(function(item) {
+      const audio = item.querySelector('.image-gallery__audio');
+      
+      if (!audio) return;
+
+      // Unlock and play when hovering over an item with audio
+      item.addEventListener('mouseenter', function() {
+        if (currentPlayingAudio && currentPlayingAudio !== audio) {
+          currentPlayingAudio.pause();
+          currentPlayingAudio.currentTime = 0;
+          if (currentPlayingItem) {
+            currentPlayingItem.classList.remove('is-playing');
+          }
+        }
+
+        function playAudio() {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(function() {
+              item.classList.add('is-playing');
+              currentPlayingAudio = audio;
+              currentPlayingItem = item;
+              audioUnlocked = true;
+            }).catch(function(error) {
+              // Audio play failed, likely needs user interaction
+              console.warn('Audio play failed. User interaction may be required.');
+            });
+          }
+        }
+
+        if (audioUnlocked) {
+          playAudio();
+        } else {
+          unlockAudio(playAudio);
+        }
+      });
+
+      item.addEventListener('mouseleave', function() {
+        audio.pause();
+        audio.currentTime = 0;
+        item.classList.remove('is-playing');
+        
+        if (currentPlayingAudio === audio) {
+          currentPlayingAudio = null;
+          currentPlayingItem = null;
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Image Gallery",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_id",
+      "label": "Display section ID",
+      "info": "ID is used in the Sections group section to merge 2 sections. ID can also be put inside any button link and the button will scroll to this section.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        {
+          "value": "desktop-hidden",
+          "label": "Mobile only"
+        },
+        {
+          "value": "mobile-hidden",
+          "label": "Desktop only"
+        },
+        {
+          "value": "always-display",
+          "label": "All devices"
+        }
+      ],
+      "label": "Display on",
+      "default": "always-display"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Custom color scheme is edited at the bottom of section settings."
+    },
+    {
+      "type": "header",
+      "content": "Gallery Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        },
+        {
+          "value": "4",
+          "label": "4 columns"
+        }
+      ],
+      "default": "3",
+      "label": "Desktop columns",
+      "info": "Number of columns on desktop screens (≥750px)"
+    },
+    {
+      "type": "select",
+      "id": "tablet_columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        }
+      ],
+      "default": "2",
+      "label": "Tablet columns",
+      "info": "Number of columns on tablet screens (480px - 749px)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1",
+      "label": "Mobile columns",
+      "info": "Number of columns on mobile screens (<480px)"
+    },
+    {
+      "type": "range",
+      "id": "gap_size",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap between images",
+      "default": 16,
+      "info": "Spacing between gallery images"
+    },
+    {
+      "type": "header",
+      "content": "Hover Effects"
+    },
+    {
+      "type": "range",
+      "id": "zoom_percent",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "label": "Image zoom on hover",
+      "default": 3,
+      "info": "Percentage of zoom effect when hovering over an image (0-20%)"
+    },
+    {
+      "type": "header",
+      "content": "Text Overlay"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 70,
+      "info": "Opacity of the text overlay background (0-100%)"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Custom color scheme",
+      "info": "Applied if Color scheme setting is set to Custom."
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_background",
+      "default": "#FFFFFF",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "custom_gradient_background",
+      "label": "Gradient background",
+      "info": "If added, replaces Background color when applicable."
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_background",
+      "label": "Image background"
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_text",
+      "default": "#2E2A39",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 20,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Image heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Add a description for this image.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Audio Settings"
+        },
+        {
+          "type": "text",
+          "id": "audio_src",
+          "label": "Audio source",
+          "info": "Go to Shopify admin > Content > Files > Upload an mp3 file, copy the link and paste it in the field above"
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "header",
+          "content": "Row Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "start_new_row",
+          "label": "Start new row",
+          "default": false,
+          "info": "Check this to start a new row. The row will use the column settings below."
+        },
+        {
+          "type": "select",
+          "id": "row_desktop_columns",
+          "options": [
+            {
+              "value": "2",
+              "label": "2 columns"
+            },
+            {
+              "value": "3",
+              "label": "3 columns"
+            },
+            {
+              "value": "4",
+              "label": "4 columns"
+            }
+          ],
+          "default": "3",
+          "label": "Desktop columns for this row",
+          "info": "Number of columns in this row on desktop (only applies if 'Start new row' is checked)"
+        },
+        {
+          "type": "select",
+          "id": "row_tablet_columns",
+          "options": [
+            {
+              "value": "2",
+              "label": "2 columns"
+            },
+            {
+              "value": "3",
+              "label": "3 columns"
+            }
+          ],
+          "default": "2",
+          "label": "Tablet columns for this row",
+          "info": "Number of columns in this row on tablet (only applies if 'Start new row' is checked)"
+        },
+        {
+          "type": "select",
+          "id": "row_mobile_columns",
+          "options": [
+            {
+              "value": "1",
+              "label": "1 column"
+            },
+            {
+              "value": "2",
+              "label": "2 columns"
+            }
+          ],
+          "default": "1",
+          "label": "Mobile columns for this row",
+          "info": "Number of columns in this row on mobile (only applies if 'Start new row' is checked)"
+        },
+        {
+          "type": "header",
+          "content": "Item Layout"
+        },
+        {
+          "type": "range",
+          "id": "desktop_columns_span",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "unit": "col",
+          "label": "Desktop columns span",
+          "default": 1,
+          "info": "Number of columns this item spans on desktop. Should not exceed the 'Desktop columns' setting above."
+        },
+        {
+          "type": "range",
+          "id": "tablet_columns_span",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "unit": "col",
+          "label": "Tablet columns span",
+          "default": 1,
+          "info": "Number of columns this item spans on tablet. Should not exceed the 'Tablet columns' setting above."
+        },
+        {
+          "type": "range",
+          "id": "mobile_columns_span",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "unit": "col",
+          "label": "Mobile columns span",
+          "default": 1,
+          "info": "Number of columns this item spans on mobile (1-3). Note: Should not exceed the 'Mobile columns' setting above."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Gallery",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,417 @@
+{%- style -%}
+  .hover-slider-{{ section.id }} {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__item {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    transition: flex-grow 0.3s ease;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__item:hover {
+    flex-grow: 1.10;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  {%- liquid
+    assign zoom_percent = section.settings.zoom_percent | default: 3
+    assign total_percent = 100 | plus: zoom_percent
+    assign scale_value = total_percent | divided_by: 100.0
+  -%}
+  .hover-slider-{{ section.id }} .hover-slider__item:hover .hover-slider__image-wrapper img {
+    transform: scale({{ scale_value }});
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    z-index: 1;
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__heading {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: {% if section.settings.heading_color != blank %}{{ section.settings.heading_color }}{% else %}#ffffff{% endif %};
+  }
+
+  .hover-slider-{{ section.id }} .hover-slider__description {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    color: {% if section.settings.description_color != blank %}{{ section.settings.description_color }}{% else %}#ffffff{% endif %};
+  }
+
+  @media screen and (max-width: 749px) {
+    .hover-slider-{{ section.id }} {
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__container {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__item {
+      flex: none;
+      width: 100%;
+      height: auto;
+      min-height: 50vh;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__item:hover {
+      flex-grow: 1;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__image-wrapper {
+      height: 50vh;
+      min-height: 300px;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__item:hover .hover-slider__image-wrapper img {
+      transform: none;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__text-overlay {
+      padding: 1.5rem;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__heading {
+      font-size: 1.25rem;
+    }
+
+    .hover-slider-{{ section.id }} .hover-slider__description {
+      font-size: 0.875rem;
+    }
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .color-scheme-{{ section.id }}.color-custom {
+    --color-background: {{ section.settings.custom_colors_background.red }}, {{ section.settings.custom_colors_background.green }}, {{ section.settings.custom_colors_background.blue }};
+    --gradient-background: {% if section.settings.custom_gradient_background != blank %}{{ section.settings.custom_gradient_background }}{% else %}{{ section.settings.custom_colors_background }}{% endif %};
+    {% if section.settings.custom_image_background != blank %}
+      {% # theme-check-disable %}
+      --gradient-background: url('{{ section.settings.custom_image_background | img_url: 'master' }}') center center / cover no-repeat;
+      {% # theme-check-enable %}
+    {% endif %}
+    --color-foreground: {{ section.settings.custom_colors_text.red }}, {{ section.settings.custom_colors_text.green }}, {{ section.settings.custom_colors_text.blue }};
+  }
+{%- endstyle -%}
+
+<div class="hover-slider-{{ section.id }} color-scheme-{{ section.id }} color-{{ section.settings.color_scheme }} gradient content-for-grouping animate-section animate--hidden isolate {{ section.settings.visibility }} section-{{ section.id }}-padding">
+  {% if section.settings.display_id %}
+    <copy-button class='section-id-btn button' data-content="#shopify-section-{{ section.id }}" data-success="false">
+      <span class="copy-text">Click to copy section ID</span>
+      <span class="copy-success">ID copied successfully!</span>
+    </copy-button>
+  {% endif %}
+  
+  <div class="hover-slider__container">
+    {%- for block in section.blocks -%}
+      <div class="hover-slider__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}" class="hover-slider__link" aria-label="{{ block.settings.heading | default: 'Slide' | escape }}">
+        {%- endif -%}
+          <div class="hover-slider__image-wrapper">
+            {%- if block.settings.image != blank -%}
+              {%- liquid
+                assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+                assign image_height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio
+              -%}
+              {{
+                block.settings.image
+                | image_url: width: 3840
+                | image_tag:
+                  loading: 'lazy',
+                  height: image_height,
+                  sizes: '33vw',
+                  widths: widths,
+                  alt: block.settings.heading | default: block.settings.image.alt | default: 'Hover slider image'
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+            {%- endif -%}
+          </div>
+          {%- if block.settings.heading != blank or block.settings.description != blank -%}
+            <div class="hover-slider__text-overlay">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="hover-slider__heading">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <div class="hover-slider__description">{{ block.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- if block.settings.link != blank -%}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hover Slider",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_id",
+      "label": "Display section ID",
+      "info": "ID is used in the Sections group section to merge 2 sections. ID can also be put inside any button link and the button will scroll to this section.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        {
+          "value": "desktop-hidden",
+          "label": "Mobile only"
+        },
+        {
+          "value": "mobile-hidden",
+          "label": "Desktop only"
+        },
+        {
+          "value": "always-display",
+          "label": "All devices"
+        }
+      ],
+      "label": "Display on",
+      "default": "always-display"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "Accent 1"
+        },
+        {
+          "value": "accent-2",
+          "label": "Accent 2"
+        },
+        {
+          "value": "background-1",
+          "label": "Background 1"
+        },
+        {
+          "value": "background-2",
+          "label": "Background 2"
+        },
+        {
+          "value": "inverse",
+          "label": "Inverse"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "background-1",
+      "label": "Color scheme",
+      "info": "Custom color scheme is edited at the bottom of section settings."
+    },
+    {
+      "type": "header",
+      "content": "Hover Effects"
+    },
+    {
+      "type": "range",
+      "id": "zoom_percent",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "label": "Image zoom on hover",
+      "default": 3,
+      "info": "Percentage of zoom effect when hovering over an image (0-20%)"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Custom color scheme",
+      "info": "Applied if Color scheme setting is set to Custom."
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_background",
+      "default": "#FFFFFF",
+      "label": "Background color"
+    },
+    {
+      "type": "color_background",
+      "id": "custom_gradient_background",
+      "label": "Gradient background",
+      "info": "If added, replaces Background color when applicable."
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image_background",
+      "label": "Image background"
+    },
+    {
+      "type": "color",
+      "id": "custom_colors_text",
+      "default": "#2E2A39",
+      "label": "Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Slide heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Add a description for this slide.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hover Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Cozy Sleep",
+            "description": "<p>Give your furry friend a comfortable place to rest.</p>"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Pet Food",
+            "description": "<p>Give your furry friend nutritious tasty meals that support health energy and a happy active lifestyle.</p>"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Pet Accessories",
+            "description": "<p>Essential accessories for your pet's comfort and style.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
